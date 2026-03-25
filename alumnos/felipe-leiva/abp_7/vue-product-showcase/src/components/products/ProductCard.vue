@@ -1,16 +1,18 @@
-<!-- src/components/products/ProductCard.vue -->
 <script setup>
-// Definición de props
-const props = defineProps({
+import { useFavoritosStore } from "../../stores/favoritos";
+
+defineProps({
   producto: {
     type: Object,
     required: true,
   },
 });
 
-// Definición de emits
-const emit = defineEmits(["agregar"]);
+defineEmits(["agregar"]);
+
+const favoritosStore = useFavoritosStore();
 </script>
+
 <template>
   <div class="product-card" data-cy="product-card">
     <img :src="producto.image" :alt="producto.title" class="product-image" />
@@ -19,6 +21,9 @@ const emit = defineEmits(["agregar"]);
       <p class="product-category">{{ producto.category }}</p>
       <p class="product-price">${{ producto.price }}</p>
       <button @click="$emit('agregar', producto)" class="btn-agregar">Agregar al carrito</button>
+      <button @click="favoritosStore.toggleFavorito(producto)" class="btn-favorito">
+        {{ favoritosStore.esFavorito(producto.id) ? "Quitar de favoritos" : "Agregar a favoritos" }}
+      </button>
     </div>
   </div>
 </template>
@@ -79,5 +84,17 @@ const emit = defineEmits(["agregar"]);
 }
 .btn-agregar:hover {
   background-color: #35a372;
+}
+
+.btn-favorito {
+  width: 100%;
+  margin-top: 0.75rem;
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
 }
 </style>
