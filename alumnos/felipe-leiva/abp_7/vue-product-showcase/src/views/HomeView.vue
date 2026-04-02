@@ -39,12 +39,12 @@ function onAgregar(producto) {
     </section>
 
     <section v-else-if="productosStore.error" class="estado estado-error">
-      <p>{{ error }}</p>
+      <p>{{ productosStore.error }}</p>
       <button @click="productosStore.fetchProductos()" class="boton-reintentar">Reintentar</button>
     </section>
 
     <section v-else-if="productosStore.productosFiltrados.length === 0" class="estado estado-vacio">
-      <p>{{ productosStore.error }}</p>
+      <p>No se encontraron productos para esta categoría.</p>
     </section>
 
     <ProductList v-else :productos="productosStore.productosFiltrados" @agregar="onAgregar" />

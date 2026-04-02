@@ -1,11 +1,24 @@
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 
+function obtenerFavoritosIniciales() {
+  if (typeof window === "undefined" || !window.localStorage) {
+    return [];
+  }
+
+  const favoritosGuardados = window.localStorage.getItem("favoritos");
+  return favoritosGuardados ? JSON.parse(favoritosGuardados) : [];
+}
+
 export const useFavoritosStore = defineStore("favoritos", () => {
-  const lista = ref(JSON.parse(localStorage.getItem("favoritos")) || []);
+  const lista = ref(obtenerFavoritosIniciales());
 
   function guardarEnLocalStorage() {
-    localStorage.setItem("favoritos", JSON.stringify(lista.value));
+    if (typeof window === "undefined" || !window.localStorage) {
+      return;
+    }
+
+    window.localStorage.setItem("favoritos", JSON.stringify(lista.value));
   }
 
   function toggleFavorito(producto) {

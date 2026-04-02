@@ -1,5 +1,8 @@
 <script setup>
 import { useFavoritosStore } from "../../stores/favoritos";
+import { useCarritoStore } from "../../stores/carrito";
+
+const carritoStore = useCarritoStore();
 
 defineProps({
   producto: {
@@ -20,7 +23,9 @@ const favoritosStore = useFavoritosStore();
       <h3 class="product-title">{{ producto.title }}</h3>
       <p class="product-category">{{ producto.category }}</p>
       <p class="product-price">${{ producto.price }}</p>
-      <button @click="$emit('agregar', producto)" class="btn-agregar">Agregar al carrito</button>
+      <button @click="carritoStore.agregar(producto)" class="btn-agregar" data-cy="btn-agregar">
+        Agregar al carrito
+      </button>
       <button @click="favoritosStore.toggleFavorito(producto)" class="btn-favorito">
         {{ favoritosStore.esFavorito(producto.id) ? "Quitar de favoritos" : "Agregar a favoritos" }}
       </button>
